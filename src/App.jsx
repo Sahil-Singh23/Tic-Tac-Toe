@@ -9,10 +9,12 @@ function App() {
 
   const prev_move = history[history.length - 1];
 
+  function handelPlay(nextSquares) {}
+
   return (
     <div className="game">
       <div className="game-board">
-        <Board />
+        <Board xIsNext={xIsNext} squares={prev_move} onPlay={handelPlay} />
       </div>
       <div className="game-info">
         <ol>{/*TODO*/}</ol>
@@ -21,7 +23,7 @@ function App() {
   );
 }
 
-function Board() {
+function Board(props) {
   const [state, setState] = useState(Array(9).fill(null));
   const [xIsNext, setXIsNext] = useState(true);
 
