@@ -47,11 +47,11 @@ function Board(props) {
     ? "It's a Draw!"
     : `Next player is ${xIsNext ? "X" : "O"}`;
 
-  if (winner || isDraw) {
+  function resetBoard() {
     setTimeout(() => {
       setXIsNext(true);
       setState(Array(9).fill(null));
-    }, 1200);
+    }, 100);
   }
   return (
     <>
@@ -70,6 +70,10 @@ function Board(props) {
         <Squares val={state[6]} onSquareClick={() => handleClick(6)}></Squares>
         <Squares val={state[7]} onSquareClick={() => handleClick(7)}></Squares>
         <Squares val={state[8]} onSquareClick={() => handleClick(8)}></Squares>
+      </div>
+      <br />
+      <div>
+        <button onClick={resetBoard}>Reset Board</button>
       </div>
     </>
   );
