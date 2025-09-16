@@ -9,12 +9,29 @@ function App() {
 
   const prev_move = history[history.length - 1];
 
-  function handelPlay(nextSquares) {}
+  function handelPlay(nextSquares) {
+    setXIsNext(!xIsNext);
+    const cur = history.slice();
+    cur.push(nextSquares);
+    setHistory(cur);
+    console.log(history);
+  }
 
+  function resetBoard() {
+    setTimeout(() => {
+      setXIsNext(true);
+      setHistory([Array(9).fill(null)]);
+    }, 100);
+  }
   return (
     <div className="game">
       <div className="game-board">
-        <Board xIsNext={xIsNext} squares={prev_move} onPlay={handelPlay} />
+        <Board
+          xIsNext={xIsNext}
+          state={prev_move}
+          onPlay={handelPlay}
+          resetBoard={resetBoard}
+        />
       </div>
       <div className="game-info">
         <ol>{/*TODO*/}</ol>
@@ -23,10 +40,7 @@ function App() {
   );
 }
 
-function Board(props) {
-  const [state, setState] = useState(Array(9).fill(null));
-  const [xIsNext, setXIsNext] = useState(true);
-
+function Board({ xIsNext, state, onPlay, resetBoard }) {
   function handleClick(i) {
     if (state[i] || calculateWinner(state)) return;
     const newArr = state.slice();
@@ -35,9 +49,7 @@ function Board(props) {
     } else {
       newArr[i] = "O";
     }
-
-    setXIsNext(!xIsNext);
-    setState(newArr);
+    onPlay(newArr);
   }
   const winner = calculateWinner(state);
   const isDraw = !winner && state.every((cell) => cell !== null);
@@ -47,12 +59,6 @@ function Board(props) {
     ? "It's a Draw!"
     : `Next player is ${xIsNext ? "X" : "O"}`;
 
-  function resetBoard() {
-    setTimeout(() => {
-      setXIsNext(true);
-      setState(Array(9).fill(null));
-    }, 100);
-  }
   return (
     <>
       <div>{status}</div>
