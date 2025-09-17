@@ -11,17 +11,13 @@ function App() {
   const prev_move = history[currentMove];
 
   function handelPlay(nextSquares) {
-    xIsNext = currentMove % 2 === 0;
     const cur = history.slice(0, currentMove + 1);
-    cur.push(nextSquares);
-    setHistory(cur);
-    setCurrentMove(cur.length - 1);
-    console.log(history);
+    setHistory([...cur, nextSquares]);
+    setCurrentMove(cur.length);
   }
 
   function resetBoard() {
     setTimeout(() => {
-      xIsNext = currentMove % 2 === 0;
       setHistory([Array(9).fill(null)]);
       setCurrentMove(0);
     }, 100);
@@ -29,7 +25,6 @@ function App() {
 
   function jumpto(move) {
     setCurrentMove(move);
-    xIsNext = currentMove % 2 === 0;
   }
   const moves = history.map((squares, move) => {
     let description;
