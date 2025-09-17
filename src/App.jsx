@@ -5,24 +5,45 @@ import "./App.css";
 
 function App() {
   const [history, setHistory] = useState([Array(9).fill(null)]);
-  const [xIsNext, setXIsNext] = useState(true);
+  const [currentMove, setCurrentMove] = useState(0);
+  const xIsNext = currentMove % 2 === 0;
 
-  const prev_move = history[history.length - 1];
+  const prev_move = history[currentMove];
 
   function handelPlay(nextSquares) {
-    setXIsNext(!xIsNext);
-    const cur = history.slice();
+    xIsNext = currentMove % 2 === 0;
+    const cur = history.slice(0, currentMove + 1);
     cur.push(nextSquares);
     setHistory(cur);
+    setCurrentMove(cur.length - 1);
     console.log(history);
   }
 
   function resetBoard() {
     setTimeout(() => {
-      setXIsNext(true);
+      xIsNext = currentMove % 2 === 0;
       setHistory([Array(9).fill(null)]);
+      setCurrentMove(0);
     }, 100);
   }
+
+  function jumpto(move) {
+    setCurrentMove(move);
+    xIsNext = currentMove % 2 === 0;
+  }
+  const moves = history.map((squares, move) => {
+    let description;
+    if (move > 0) {
+      description = "Go to move " + move;
+    } else {
+      description = "Go to Game start";
+    }
+    return (
+      <li key={move}>
+        <button onClick={() => jumpto(move)}>{description}</button>
+      </li>
+    );
+  });
   return (
     <div className="game">
       <div className="game-board">
@@ -34,7 +55,7 @@ function App() {
         />
       </div>
       <div className="game-info">
-        <ol>{/*TODO*/}</ol>
+        <ol>{moves}</ol>
       </div>
     </div>
   );
